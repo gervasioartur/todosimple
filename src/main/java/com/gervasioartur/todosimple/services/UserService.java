@@ -19,7 +19,7 @@ public class UserService  {
     public User findById(Long id){
         Optional<User> user = this.userRepository.findById(id);
         return user.orElseThrow(() -> new RuntimeException(
-                "User not found! id: " + id + ", Tipo: " + User.class.getName()
+                "User not found! id: " + id + ", Type: " + User.class.getName()
         ));
     }
 
@@ -27,7 +27,6 @@ public class UserService  {
     public User create(User user){
         user.setId(null);
         user = this.userRepository.save(user);
-        this.taskRepository.saveAll(user.getTasks());
         return  user;
     }
 
@@ -35,7 +34,8 @@ public class UserService  {
     public User update(User user){
         User newUser =  findById(user.getId());
         newUser.setPassword(user.getPassword());
-        return this.userRepository.save(newUser);
+        newUser = this.userRepository.save(newUser);
+        return newUser;
     }
 
     public void delete(Long id){
