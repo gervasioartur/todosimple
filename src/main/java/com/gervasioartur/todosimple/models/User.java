@@ -15,6 +15,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -22,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 @Table(name = User.TABLE_NAME)
 public class User {
     public interface CreateUser { }
-    public interface UpdateUser{}
+    public interface UpdateUser{ }
 
     public static final String TABLE_NAME = "user";
 
@@ -43,7 +44,7 @@ public class User {
     @NotEmpty(groups = { CreateUser.class, UpdateUser.class })
     @Size(groups = { CreateUser.class, UpdateUser.class }, min = 8, max = 60)
     private String password;
- 
+
     @OneToMany(mappedBy = "user")
     private List<Task> tasks = new ArrayList<Task>();
 
@@ -80,6 +81,7 @@ public class User {
         this.password = password;
     }
 
+    @JsonIgnore
     public List<Task> getTasks() {
         return this.tasks;
     }
