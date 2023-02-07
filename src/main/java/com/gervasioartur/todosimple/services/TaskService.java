@@ -33,7 +33,7 @@ public class TaskService {
 
     @Transactional
     public Task create(Task task) {
-        User user = this.userService.findById(task.getId());
+        User user = this.userService.findById(task.getUser().getId());
         task.setId(null);
         task.setUser(user);
         task = this.taskRepository.save(task);
