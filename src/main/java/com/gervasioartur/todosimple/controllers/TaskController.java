@@ -20,6 +20,7 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @GetMapping("/{id}")
     public ResponseEntity<Task> findById(@PathVariable Long id){
         Task task = this.taskService.findById(id);
         return ResponseEntity.ok(task);
@@ -31,6 +32,8 @@ public class TaskController {
         return ResponseEntity.ok().body(taskList);
     }
 
+    @PostMapping
+    @Validated
     public ResponseEntity<Void> create (@Valid @RequestBody Task task){
         this.taskService.create(task);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -38,11 +41,15 @@ public class TaskController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PutMapping("/{id}")
+    @Validated
     public ResponseEntity<Void> update(@Valid @RequestBody Task task, @PathVariable Long id){
         task.setId(id);
         this.taskService.update(task);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id ){
         this.taskService.delete(id);
         return ResponseEntity.noContent().build();
