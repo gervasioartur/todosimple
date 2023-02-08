@@ -2,6 +2,7 @@ package com.gervasioartur.todosimple.controllers;
 
 import com.gervasioartur.todosimple.models.Task;
 import com.gervasioartur.todosimple.services.TaskService;
+import com.gervasioartur.todosimple.services.UserService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.List;
 public class TaskController {
     @Autowired
     private TaskService taskService;
+    private UserService userService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> findById(@PathVariable Long id){
@@ -28,6 +30,7 @@ public class TaskController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Task>> findByUserId(@PathVariable Long userId ){
+        this.userService.findById(userId);
         List<Task> taskList =  this.taskService.findAllByUserId(userId);
         return ResponseEntity.ok().body(taskList);
     }
